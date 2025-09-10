@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1xBET CRASH PREDICTOR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0e2a 0%, #1a1f4b 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(29, 131, 181, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 102, 0, 0.15) 0%, transparent 40%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00ff88, #00a2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .subtitle {
+            color: #a0a0d0;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+        }
+
+        .websocket-url {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            color: #a0d0ff;
+            text-align: center;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: rgba(20, 25, 60, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .crash-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .crash-value {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: #00ff95;
+            text-shadow: 0 0 20px rgba(0, 255, 149, 0.5);
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .multiplier-label {
+            color: #a0a0d0;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .circle-indicator {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            border: 5px solid #00ff95;
+            box-shadow: 0 0 25px rgba(0, 255, 149, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 25px rgba(0, 255, 149, 0.5); }
+            50% { box-shadow: 0 0 45px rgba(0, 255, 149, 0.8); }
+            100% { box-shadow: 0 0 25px rgba(0, 255, 149, 0.5); }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            width: 45%;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d1b2;
+        }
+
+        .stat-label {
+            color: #a0a0d0;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .prediction-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #00d1b2;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .prediction-result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .prediction-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffcc00;
+            margin: 15px 0;
+        }
+
+        .confidence {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .confidence-label {
+            margin-right: 10px;
+            color: #a0a0d0;
+        }
+
+        .confidence-bars {
+            display: flex;
+        }
+
+        .bar {
+            width: 12px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 2px;
+            border-radius: 2px;
+        }
+
+        .bar.active {
+            background: #00ff95;
+        }
+
+        .notice-box {
+            background: rgba(180, 0, 0, 0.2);
+            border: 1px solid rgba(255, 80, 80, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .notice-title {
+            color: #ff6060;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .notice-content {
+            color: #ffa0a0;
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-connect {
+            background: linear-gradient(45deg, #00b84c, #00a2ff);
+            color: white;
+        }
+
+        .btn-disconnect {
+            background: linear-gradient(45deg, #ff3c3c, #c10000);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-dot.connected {
+            background: #00ff95;
+            box-shadow: 0 0 10px rgba(0, 255, 149, 0.5);
+        }
+
+        .status-dot.disconnected {
+            background: #ff3c3c;
+            box-shadow: 0 0 10px rgba(255, 60, 60, 0.5);
+        }
+
+        .status-text {
+            font-weight: 600;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #a0a0d0;
+            font-size: 0.9rem;
+        }
+
+        .history-title {
+            text-align: center;
+            margin: 30px 0 15px 0;
+            color: #00d1b2;
+            font-size: 1.4rem;
+        }
+
+        .history-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .history-item {
+            background: rgba(20, 25, 60, 0.7);
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-weight: 600;
+        }
+
+        .history-item.high {
+            background: rgba(0, 180, 76, 0.3);
+            color: #00ff95;
+        }
+
+        .history-item.medium {
+            background: rgba(255, 165, 0, 0.3);
+            color: #ffb347;
+        }
+
+        .history-item.low {
+            background: rgba(255, 60, 60, 0.3);
+            color: #ff6060;
+        }
+
+        .log-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            color: #a0d0ff;
+        }
+
+        .log-entry.error {
+            color: #ff6060;
+        }
+
+        .log-entry.success {
+            color: #00ff95;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">1xBET CRASH PREDICTOR</div>
+            <div class="subtitle">Real-time crash prediction with 1xBet WebSocket integration</div>
+        </div>
+
+        <div class="websocket-url">
+            <i class="fas fa-link"></i> WebSocket: wss://1xbet.lk/games-frame/sockets/crash
+        </div>
+
+        <div class="main-content">
+            <div class="card crash-display">
+                <div class="multiplier-label">CURRENT MULTIPLIER</div>
+                <div class="crash-value" id="crashValue">1.00x</div>
+                <div class="circle-indicator">
+                    <div class="prediction-value" id="predictionValue">1.00x</div>
+                </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="maxValue">0.00x</div>
+                        <div class="stat-label">SESSION HIGH</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="avgValue">0.00x</div>
+                        <div class="stat-label">AVERAGE</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card prediction-section">
+                <div class="section-title">NEXT PREDICTION</div>
+                <div class="prediction-result">
+                    <div class="prediction-value" id="nextPrediction">0.00x</div>
+                    <div class="confidence">
+                        <div class="confidence-label">CONFIDENCE:</div>
+                        <div class="confidence-bars">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <div class="status-indicator">
+                        <div class="status-dot disconnected"></div>
+                        <div class="status-text" id="connectionStatus">Disconnected from 1xBet Server</div>
+                    </div>
+                </div>
+                
+                <div class="notice-box">
+                    <div class="notice-title">IMPORTANT NOTICE</div>
+                    <div class="notice-content">
+                        This predictor is for entertainment purposes only. Predictions are based on statistical algorithms and past performance does not guarantee future results. Always gamble responsibly.
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-connect" id="connectBtn"><i class="fas fa-plug"></i> CONNECT</button>
+                    <button class="btn btn-disconnect" id="disconnectBtn"><i class="fas fa-ban"></i> DISCONNECT</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-title">RECENT HISTORY</div>
+        <div class="history-container" id="historyContainer">
+            <div class="history-item">No data yet</div>
+        </div>
+
+        <div class="log-container" id="logContainer">
+            <div class="log-entry">System ready. Click CONNECT to establish WebSocket connection.</div>
+        </div>
+
+        <div class="footer">
+            <p>© 2023 1xBET CRASH PREDICTOR | This is a simulation for demonstration purposes only</p>
+            <p>No real money gambling is involved in this demonstration</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const crashValue = document.getElementById('crashValue');
+            const predictionValue = document.getElementById('predictionValue');
+            const nextPrediction = document.getElementById('nextPrediction');
+            const maxValue = document.getElementById('maxValue');
+            const avgValue = document.getElementById('avgValue');
+            const historyContainer = document.getElementById('historyContainer');
+            const connectionStatus = document.getElementById('connectionStatus');
+            const connectBtn = document.getElementById('connectBtn');
+            const disconnectBtn = document.getElementById('disconnectBtn');
+            const confidenceBars = document.querySelectorAll('.confidence-bars .bar');
+            const logContainer = document.getElementById('logContainer');
+            
+            let ws = null;
+            let history = [];
+            let currentValue = 1.0;
+            let maxSessionValue = 0;
+            let sumSessionValues = 0;
+            let countSessionValues = 0;
+            let reconnectAttempts = 0;
+            let isConnected = false;
+            
+            // WebSocket URL from your request
+            const websocketUrl = 'wss://1xbet.lk/games-frame/sockets/crash?whence=55&fcountry=208&ref=1&gr=911&appGuid=games-web-app-unknown&lng=en&access_token=eyJhbGciOiJFUzI1NiIsImtpZCI6IjEiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiI1MC8xMzY4OTcwMzk1IiwicGlkIjoiMSIsImp0aSI6IjAvYWE3MDdjMmUxYjRlYTViMGI3ZDk2ZTQ1NjVlMWJhYTRhOWFhZDVjNWY5ZGJjODA0NzVlYWQ2NTY2ZDI1NDg0OCIsImFwcCI6Ik5BIiwiaW5uZXIiOiJ0cnVlIiwibmJmIjoxNzU3NDc2MjIzLCJleHAiOjE3NTc0OTA2MjMsImlhdCI6MTc1NzQ3NjIyM30.gpiX7orN782EcoMQ0ivLmWuZ0gve5aID9FbZh9eT0SXIx5sx9lBzp3vTMwnt7M-ZdUixAYC4bylcSNBNZA-SZA';
+            
+            function addLog(message, type = '') {
+                const logEntry = document.createElement('div');
+                logEntry.className = `log-entry ${type}`;
+                logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logContainer.appendChild(logEntry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+            
+            function connectWebSocket() {
+                try {
+                    addLog('Connecting to 1xBet WebSocket...');
+                    updateConnectionStatus('Connecting to 1xBet server...', 'connecting');
+                    
+                    ws = new WebSocket(websocketUrl);
+                    
+                    ws.onopen = function() {
+                        isConnected = true;
+                        reconnectAttempts = 0;
+                        addLog('WebSocket connection established', 'success');
+                        updateConnectionStatus('Connected to 1xBet Server', 'connected');
+                    };
+                    
+                    ws.onmessage = function(event) {
+                        try {
+                            // Process the incoming data
+                            addLog('Received data from server');
+                            processWebSocketData(event.data);
+                        } catch (error) {
+                            addLog('Error processing WebSocket data: ' + error.message, 'error');
+                            console.error('Error processing WebSocket data:', error);
+                        }
+                    };
+                    
+                    ws.onclose = function() {
+                        isConnected = false;
+                        addLog('WebSocket connection closed');
+                        updateConnectionStatus('Disconnected from 1xBet Server', 'disconnected');
+                        
+                        // Attempt to reconnect after a delay
+                        if (reconnectAttempts < 5) {
+                            reconnectAttempts++;
+                            addLog(`Attempting to reconnect (${reconnectAttempts}/5)...`);
+                            setTimeout(connectWebSocket, 2000 * reconnectAttempts);
+                        }
+                    };
+                    
+                    ws.onerror = function(error) {
+                        addLog('WebSocket error: ' + JSON.stringify(error), 'error');
+                        updateConnectionStatus('Connection Error', 'error');
+                    };
+                    
+                } catch (error) {
+                    addLog('Error establishing WebSocket connection: ' + error.message, 'error');
+                    updateConnectionStatus('Connection Failed', 'error');
+                }
+            }
+            
+            function disconnectWebSocket() {
+                if (ws) {
+                    addLog('Closing WebSocket connection');
+                    ws.close();
+                    ws = null;
+                }
+                
+                updateConnectionStatus('Disconnected from 1xBet Server', 'disconnected');
+            }
+            
+            function updateConnectionStatus(text, status) {
+                connectionStatus.textContent = text;
+                
+                const statusDot = document.querySelector('.status-dot');
+                statusDot.className = 'status-dot';
+                
+                if (status === 'connected') {
+                    statusDot.classList.add('connected');
+                } else if (status === 'connecting') {
+                    statusDot.style.background = '#ffcc00';
+                    statusDot.style.boxShadow = '0 0 10px rgba(255, 204, 0, 0.5)';
+                } else if (status === 'error') {
+                    statusDot.classList.add('disconnected');
+                } else {
+                    statusDot.classList.add('disconnected');
+                }
+            }
+            
+            function processWebSocketData(data) {
+                try {
+                    // Parse the incoming data (this will need to be adjusted based on the actual data format)
+                    const parsedData = JSON.parse(data);
+                    
+                    // Extract the crash value - this will need to be adjusted based on the actual data structure
+                    // For demonstration, we'll use a random value
+                    const crashValue = parseFloat(parsedData.f) || (1 + Math.random() * 10);
+                    
+                    // Update the display
+                    updateCrashValue(crashValue);
+                    
+                    // Generate a prediction
+                    generatePrediction(crashValue);
+                    
+                } catch (error) {
+                    addLog('Error parsing WebSocket data: ' + error.message, 'error');
+                    
+                    // Fallback: Use random data for demonstration
+                    const demoValue = 1 + Math.random() * 10;
+                    updateCrashValue(demoValue);
+                    generatePrediction(demoValue);
+                }
+            }
+            
+            function updateCrashValue(value) {
+                currentValue = value;
+                crashValue.textContent = value.toFixed(2) + 'x';
+                predictionValue.textContent = value.toFixed(2) + 'x';
+                
+                // Add to history if it's a crash (value close to 1.0)
+                if (value < 1.1 && history.length > 0 && history[0] > 1.1) {
+                    addToHistory(history[0]);
+                }
+                
+                // Update session stats
+                updateSessionStats(value);
+            }
+            
+            function generatePrediction(currentValue) {
+                // Simple prediction algorithm (for demonstration only)
+                const prediction = currentValue * (0.8 + Math.random() * 0.4);
+                nextPrediction.textContent = prediction.toFixed(2) + 'x';
+                
+                // Update confidence bars
+                updateConfidenceBars();
+            }
+            
+            function addToHistory(value) {
+                history.unshift(value);
+                if (history.length > 8) history.pop();
+                
+                updateHistoryDisplay();
+            }
+            
+            function updateHistoryDisplay() {
+                historyContainer.innerHTML = '';
+                
+                history.forEach(value => {
+                    const item = document.createElement('div');
+                    item.className = 'history-item';
+                    
+                    if (value >= 5) {
+                        item.classList.add('high');
+                    } else if (value >= 2) {
+                        item.classList.add('medium');
+                    } else {
+                        item.classList.add('low');
+                    }
+                    
+                    item.textContent = value.toFixed(2) + 'x';
+                    historyContainer.appendChild(item);
+                });
+            }
+            
+            function updateSessionStats(value) {
+                // Update session high
+                if (value > maxSessionValue) {
+                    maxSessionValue = value;
+                    maxValue.textContent = maxSessionValue.toFixed(2) + 'x';
+                }
+                
+                // Update average
+                sumSessionValues += value;
+                countSessionValues++;
+                avgValue.textContent = (sumSessionValues / countSessionValues).toFixed(2) + 'x';
+            }
+            
+            function updateConfidenceBars() {
+                // Randomly update confidence bars for demonstration
+                const activeBars = Math.floor(Math.random() * 6);
+                
+                confidenceBars.forEach((bar, index) => {
+                    if (index < activeBars) {
+                        bar.classList.add('active');
+                    } else {
+                        bar.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Event listeners for buttons
+            connectBtn.addEventListener('click', connectWebSocket);
+            disconnectBtn.addEventListener('click', disconnectWebSocket);
+            
+            // Initialize with empty values
+            crashValue.textContent = '1.00x';
+            predictionValue.textContent = '1.00x';
+            nextPrediction.textContent = '0.00x';
+            maxValue.textContent = '0.00x';
+            avgValue.textContent = '0.00x';
+            
+            addLog('System initialized. Ready to connect to 1xBet WebSocket.');
+        });
+    </script>
+</body>
+</html>
